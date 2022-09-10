@@ -17,6 +17,8 @@
         "regex": "cpp",
         "valarray": "cpp",
         "iosfwd": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "cstdio": "cpp",
+        "algorithm": "cpp"
     }
 }
