@@ -1,5 +1,12 @@
+// Jorge Valdivia A00831133
 #include <iostream>
+#include <vector>
+
+
 using namespace std;
+
+vector<string> resultados;
+
 int subsequence(char *cUno, char *cDos, int m, int n)
 {
     int iMatA [m+1][n+1];
@@ -23,7 +30,7 @@ int subsequence(char *cUno, char *cDos, int m, int n)
     return iMatA[m][n];
 
 }
-int main(int argc, const char * argv[])
+int main()
 {
     int iCasos = 0;
     
@@ -53,12 +60,15 @@ int main(int argc, const char * argv[])
         {
             cDos[iA] = sLinea2[iA];
         }
-        
-        cout<<"Case "<<iN + 1<<": "<<subsequence(cUno, cDos, slineatam, slinea2tam)<<endl;
+        string resul = "Case " + to_string(iN+1) + ": " +to_string(subsequence(cUno, cDos, slineatam, slinea2tam)) ;
+        resultados.push_back(resul);
+        //cout<<"Case "<<iN + 1<<": "<<subsequence(cUno, cDos, slineatam, slinea2tam)<<endl;
         iN++;
         slineatam=0;
         slinea2tam=0;
-        
+    }
+    for(int i = 0; i < resultados.size(); i++){
+        cout << resultados[i]<< endl;
     }
    
     return 0;
