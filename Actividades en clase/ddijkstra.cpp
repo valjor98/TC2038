@@ -2,7 +2,7 @@
 #include <queue>
 #include <vector>
 #include <climits>
-#include<utility>
+#include <utility>
 
 using namespace std;
 
@@ -30,7 +30,7 @@ vector<int> dijkstra(Graph &G, int source){
     queue.push(vs);
     while(!queue.empty()){
         int u = queue.top().second;
-        queue.pop()
+        queue.pop();
         for(int i = 0; i < G[u].size(); i++){
             Edge e = G[u][i];
             int v = e.second;
