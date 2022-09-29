@@ -1,9 +1,12 @@
 #include <iostream>
 #include <climits>
+#include <vector>
 
 using namespace std;
 
 #define N 22
+
+vector<char> resultados;
 
 void InitMat(int Mat[N][N], int n){
   for(int i = 0; i < n; i++){
@@ -15,9 +18,9 @@ void InitMat(int Mat[N][N], int n){
 }
 
 void Dijkstra(int W[N][N], int L[N], int v){
-	bool encontre[N];
+	bool flag[N];
 	for (int i=0; i<N; i++){
-		encontre[i] = false;
+		flag[i] = false;
 	}
 	for (int i=0; i<v; i++){
 		L[i] = W[0][i];
@@ -28,23 +31,23 @@ void Dijkstra(int W[N][N], int L[N], int v){
 		int min = INT_MAX;
 		int imin;
 		for (int j=1; j<v; j++){
-			if (!encontre[j] && 0 < L[j] && L[j] < min){
+			if (!flag[j] && 0 < L[j] && L[j] < min){
 				min = L[j];
 				imin = j;
 			}
 		}
 
 		for (int j=1; j<v; j++){
-			if (W[imin][j] != INT_MAX && L[imin]+W[imin][j] < L[j]){
-				L[j] =  L[imin]+W[imin][j];
+			if (  (W[imin][j] != INT_MAX  )  &&  ( L[imin]+W[imin][j] < L[j]  )  ) {
+				L[j] =  L[imin] + W[imin][j];
 			}
 		}
-		encontre[imin] = true;
+		flag[imin] = true;
 	}
 }
 
 char Mayor(int L[N], int n){
-  int Mayor = L[0]; // yo get the biggest path
+  int Mayor = L[0];
   int Pos;
   for(int i = 1; i < n; i++){
     if(Mayor < L[i]){
@@ -55,25 +58,28 @@ char Mayor(int L[N], int n){
   return Pos+'A';
 }
 
-int main(){
 
+int main(){
   int Cases;
   cin >> Cases;
-  int nodos, caminos; //numero de cuartos y de caminos
+  int nodos, caminos;
   int Mat[N][N];
   int L[N];
-  char X, Y; //rooms
-  int C; //metros
-  for(int i = 0; i < Cases; i++){ //for the number of cases
+  char X, Y;
+  int C;
+  for(int i = 0; i < Cases; i++){
     cin >> nodos >> caminos;
-    InitMat(Mat, nodos); // to initialize the matrix
+    InitMat(Mat, nodos);
     for(int j = 0; j < caminos; j++){
       cin >> X >> Y >> C;
-      Mat[X-'A'][Y-'A']= Mat[Y-'A'][X-'A'] = C;
+      Mat[X-'A'][Y-'A'] = Mat[Y-'A'][X-'A'] = C;
     }
-
     Dijkstra(Mat, L, nodos);
-    cout << "Case "<<i+1<<": " << Mayor(L, nodos) << endl;
+    resultados.push_back( Mayor(L, nodos) );
+  }
+
+  for(int i = 0; i < resultados.size(); i++){
+    cout << "Case "<<i+1<<": " << resultados[i] << endl;
   }
 
   return 0;
