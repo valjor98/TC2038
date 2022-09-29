@@ -37,6 +37,7 @@ void print(int mat[MAX][MAX], int p[MAX][MAX], int n){
 			}
 		}
 		cout << endl;
+		//ss
 	}
 	cout << "Matriz de Trayectorias: " << endl;
 	for (int i=0; i<n; i++){
