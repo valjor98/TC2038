@@ -1,6 +1,8 @@
 // Jorge Valdivia A00831133
 #include <iostream>
 #include <climits>
+#include <vector>
+
 
 using namespace std;
 
@@ -13,15 +15,18 @@ void inicMat(int D[MAX][MAX], int P[MAX][MAX]){
 	}
 }
 
-void lee(int d[MAX], int &n){
-	cin >> n;
-	for (int i=0; i<=n; i++){
+void lee(int d[MAX], int &n, int &m){
+	cin >> n; 	// 4
+	d[0] = 0;	// 0	4 	5 	7 	8 	10
+	for (int i=1; i<=n; i++){
 		cin >> d[i];
 	}
+	d[n+1] = m;
 }
 
 // Complejidad: O(n^3)
 void calcula(int D[MAX][MAX], int P[MAX][MAX], int d[MAX], int n){
+	n++;
 	for (int i=1; i<=n; i++){
 		D[i][i] = 0;
 	}
@@ -30,7 +35,8 @@ void calcula(int D[MAX][MAX], int P[MAX][MAX], int d[MAX], int n){
 			int j = i+diag;
 			int min = INT_MAX, mink;
 			for (int k=i; k<j; k++){
-				int multEsc = D[i][k]+D[k+1][j]+d[i-1]*d[k]*d[j];
+				int multEsc = D[i][k]+D[k+1][j] + (d[j] - d[i-1]);
+				//int multEsc = D[i][k]+D[k+1][j]+d[i-1]*d[k]*d[j];
 				if (multEsc < min){
 					min = multEsc;
 					mink = k;
@@ -62,6 +68,7 @@ void despliega(int P[MAX][MAX], int n){
 }
 
 void despM(int D[MAX][MAX], int P[MAX][MAX], int n){
+	n++;
 	cout << "-------------" << endl;
 	for(int i=1; i<=n; i++){
 		for (int j=1; j<=n; j++){
@@ -80,29 +87,25 @@ void despM(int D[MAX][MAX], int P[MAX][MAX], int n){
 
 
 int main(){
-	int d[MAX]; // Las dimenciones de las matrices
-	// D guarda las múltipicaciones minimas escalares desde la matriz i hasta la matriz j
-	// P guarda la k que minimiza las MEM Mi...Mj
-	int D[MAX][MAX], P[MAX][MAX];
-	int n;
-	inicMat(D,P); 	// Inicializar con 0's las matrices
-	lee(d,n);		// Leer la n y las dimenciones de las matrices
-	calcula(D, P, d, n);	// Calcular las matrices D y P
-	cout << D[1][n]<< endl;
-	despliega(P, n);		// Desplegar la asociatividad
-	despM(D,P,n);			// Deplegar matrices D y P
+	vector<string> resultados;
+	int m;
+	cin >> m;
+	while(m != 0){
+		int d[MAX]; // Las dimenciones de las matrices
+		// D guarda las múltipicaciones minimas escalares desde la matriz i hasta la matriz j
+		// P guarda la k que minimiza las MEM Mi...Mj
+		int D[MAX][MAX], P[MAX][MAX];
+		int n;
+		inicMat(D,P); 	// Inicializar con 0's las matrices
+		lee(d, n, m);		// Leer la n y las dimenciones de las matrices
+		calcula(D, P, d, n);	// Calcular las matrices D y P
+		string z = "The minimum cutting is " + to_string(D[1][n+1]) + ".";
+		resultados.push_back(z);
+		//despliega(P, n);		// Desplegar la asociatividad
+		//despM(D,P,n);			// Deplegar matrices D y P
+		cin >> m;
+	}
+	for(auto r:resultados){
+		cout << r << endl;
+	}
 }
-
-/*
-4
-20 2 30 12 8
-
-RESP = 1232
-(A)x(((B)x(C))x(D))
-*/
-
-// A  8 x 2
-// B  2 x 5
-// C  5 x 4
-// n = 3
-// d  8 2 5 4
