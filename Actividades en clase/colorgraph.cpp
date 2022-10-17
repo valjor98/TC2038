@@ -9,7 +9,7 @@ using namespace std;
 #define MAX 100
 
 struct color{
-    int conex;  //cant conexiones
+    int conex;  // cant conexiones
     int vtx;    // el numero de vertice
 };
 // Ordenamiento se adescendente en cant de conexiones y en empate rl menor nombre de vertice
@@ -39,13 +39,13 @@ vector<int> colorGraph(bool matAdj[MAX][MAX], vector<color> &vtxColor){
             colored[i] = ++colNum;
             unordered_set<int> conj;    // todos los vertices coloreados con colNum
             conj.insert(i);
-            for(int b=a=1; b<n; b++){
+            for(int b=a+1; b<n; b++){
                 int j = vtxColor[b].vtx;
                 //verificar
                 //      el vertice j no ha sido coloreado
                 //      el vertice j no tienen adyacencia con i
                 //      el vertic ej no tinene adyacencia con algun vertice que fue coloreado
-                if(!colored[i] && !matAdj[i][j] && canColor(matAdj, conj, j)){
+                if(!colored[j] && !matAdj[i][j] && canColor(matAdj, conj, j)){
                     colored[j] = colNum;
                     conj.insert(j);
                 }
@@ -83,7 +83,7 @@ int main(){
     sort(vtxColor.begin(), vtxColor.end(), my_cmp);
     vector<int> colored = colorGraph(matAdj, vtxColor);
     for( int i = 0; i<n; i++){
-        cout << (i-1) << " colored with color " << colored[i] << endl;
+        cout << (i+1) << " colored with color " << colored[i] << endl;
     }
 }
 /* 
