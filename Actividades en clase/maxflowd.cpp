@@ -23,7 +23,7 @@ public:
         this->V = V;
         level = new int[V];
     }
-    
+
     void addEdge(int u, int v, int C){
         int tam = adj[v].size();
         Edge a{v, 0, C, tam};
@@ -38,10 +38,53 @@ public:
 };
 
 bool Graph::BFS(int s, int t){
-    //Corner case
-    if(s == t){
-        return -1;
+    for(int i = 0; i < V; i++)
+        level[i] = -1;
+    level[s] = 0;
+    queue<int> q;
+    q.push(s);  
+
+    vector<Edge>::iterator i;
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
+        for(i = adj[u].begin(); i != adj[u].end(); i++){
+            Edge &e = *i;
+            if(level[e.v] < 0 && e.flow < e.C){
+                // level of current vertex is,
+                // level of parent + 1
+                level[e.v] = level[u] + 1;
+                q.push(e.v);
+            }
+        }
     }
+    return level[t] < 0 ? false : true;
+}
+
+int Graph::sendFlow(int u, int flow, int t, int start[]){
+    //sink reached
+    if(u == t){
+        return flow;
+    }
+    for( ; start[u] < adj[u].size(); start[u]++){
+        Edge &e = adj[u][start[u]];
+        if(level[e.v] == level[u]+1 && e.flow < e.C){
+            int curr_flow = min(flow, e.C - e.flow);
+            int temp_flow = sendFlow(e.v, curr_flow, t, start);
+            if(temp_flow > 0){
+                e.flow += temp_flow;
+                adj[e.v][e.rev].flow -= temp_flow;
+                return temp_flow;
+            }
+        }
+    }
+    return 0;
+}
+
+int Graph::DinicMaxFlow(int s, int t){
+    //Corner case
+    if(s == t)
+        return -1;
     int total = 0;
     while(BFS(s, t) == true){
         int *start = new int[V+1] {0};
@@ -63,3 +106,18 @@ int main(){
     cout << "Maximum flow " << g.DinicMaxFlow(s-1, t-1) << endl;
     return 0;
 }
+/* 
+7 11
+1 7
+1 2 10
+1 3 15
+1 4 20
+2 3 5
+2 5 10
+3 4 10
+3 5 12
+4 5 10
+4 6 10
+5 7 50
+6 7 10
+ */
