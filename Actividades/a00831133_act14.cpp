@@ -5,11 +5,13 @@
 
 using namespace std;
 
+long long maxF = 1e18;
+
 // Esta estrcutura representa un Nodo
 struct Edge{
-    int v;          // vertex
-    int flow;       // flujo 
-    int C;          // capacidad
+    int v;                  // vertex
+    long long flow;       // flujo 
+    long long C;          // capacidad
     int rev ; 
 };
  
@@ -25,7 +27,7 @@ public :
         level = new int[V];
     }
     // metodo para agregar un vertice
-    void addEdge(int u, int v, int C){
+    void addEdge(int u, int v, long long C){
         int tam = adj[v].size();
         Edge a{v, 0, C, tam};   // primer nodo, con capacidad C
         tam = adj[u].size();
@@ -34,8 +36,8 @@ public :
         adj[v].push_back(b); // reverse edge
     }
     bool BFS(int s, int t);
-    int sendFlow(int s, int flow, int t, int ptr[]);
-    int DinicMaxflow(int s, int t);
+    long long sendFlow(int s, long long flow, int t, int ptr[]);
+    long long DinicMaxflow(int s, int t);
 };
  
 // Asignar los niveles dentro de el grafo
@@ -63,8 +65,7 @@ bool Graph::BFS(int s, int t){
     return level[t] < 0 ? false : true ; //si no podemos llegar al punto entonces regresamos false, si no true
 }
 
-
-int Graph::sendFlow(int u, int flow, int t, int start[]){
+long long Graph::sendFlow(int u, long long flow, int t, int start[]){
     // Se llego al nodo t
     if (u == t){
         return flow;
@@ -72,8 +73,8 @@ int Graph::sendFlow(int u, int flow, int t, int start[]){
     for (  ; start[u] < adj[u].size(); start[u]++){ // checa todos los vertices adyacentes
         Edge &e = adj[u][start[u]];                 // selecciona el siguiente vertice adyacente                         
         if (level[e.v] == level[u]+1 && e.flow < e.C){
-            int curr_flow = min(flow, e.C - e.flow);            // encuentra el flujo minimo de u a t
-            int temp_flow = sendFlow(e.v, curr_flow, t, start);
+            long long curr_flow = min(flow, e.C - e.flow);            // encuentra el flujo minimo de u a t
+            long long temp_flow = sendFlow(e.v, curr_flow, t, start);
             if (temp_flow > 0){             // si el flujo es mayor que cero, agrega el flujo al vertice actual 
                 e.flow += temp_flow; 
                 adj[e.v][e.rev].flow -= temp_flow;
@@ -86,17 +87,17 @@ int Graph::sendFlow(int u, int flow, int t, int start[]){
 
 // Complejidad O(EV^2)
 // encunetra el flujo maximo dentro de un grafo
-int Graph::DinicMaxflow(int s, int t){
+long long Graph::DinicMaxflow(int s, int t){
     // Corner case
     if (s == t)
         return -1;
  
-    int total = 0;   
+    long long total = 0;   
     // mientas aun exista un camino de nodo s a nodo t
     while (BFS(s, t)){
         //almacena la cantidad de vertices visitadas
         int *start = new int[V+1] {0};
-        while (int flow = sendFlow(s, INT_MAX, t, start)){  // manda el flujo
+        while (long long flow = sendFlow(s, maxF, t, start)){  // manda el flujo
             total += flow;
         }
     }
@@ -105,7 +106,8 @@ int Graph::DinicMaxflow(int s, int t){
 
 // 
 int main(){
-    int n, m, s, t, a, b, c;
+    int n, m, s, t, a, b;
+    long long c;
     // n = cantidad de nodos (vetex)
     // m = cantidad de arcos (edges)
     // s = tu nodo de salida (source)
