@@ -61,7 +61,27 @@ void part2(vector<int> &v, int ini, int fin, int &piv){
 
 // Particion con la mediana de ini, mid, fin;
 void part3(vector<int> &v, int ini, int fin, int &piv){
-
+	int mid = (fin-ini)/2;
+	int temp;
+	if(ini+1 != fin){
+		mid = median(v, ini, mid, fin);
+		temp = v[ini];
+		v[ini] = v[mid];
+		v[mid] = temp;
+	}
+	piv = ini;
+	int j = ini;
+	for(int k = ini+1; k <= fin; k++){
+		if(v[k] < v[piv]){
+			temp = v[++j];
+			v[j] = v[k];
+			v[k] = temp;
+		}
+	}
+	piv = j;
+	temp = v[ini];
+	v[ini] = v[piv];
+	v[piv] = temp;
 }
 
 
@@ -96,14 +116,14 @@ int main(){
 	}
 	cont = 0;
 	quicksort(v1, 0, v1.size()-1, cont, 1); // Con elemPivote en Inicio
-	//print(v1);
+//	print(v1);
 	cout << "Salida1: " <<cont<<endl;
 	cont = 0;
 	quicksort(v2, 0, v2.size()-1, cont, 2); // Con elemPivore al Final
-	print(v2);
+//	print(v2);
 	cout << "Salida2: " <<cont<<endl;
 	cont = 0;
-//quicksort(v3, 0, v3.size()-1, cont, 3); // Con elemPivote de la Mediana: ini-mid-fin
+	quicksort(v3, 0, v3.size()-1, cont, 3); // Con elemPivote de la Mediana: ini-mid-fin
 //	print(v3);
 	cout << "Salida3: " <<cont<<endl;
 
