@@ -33,6 +33,34 @@ float dist(Point &p1, Point &p2){
     return sqrt((p1.x -p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
 }
 
+float bruteForce(vector<Point> &P, int ini, int fin){
+    float minAux = FLT_MAX;
+    for(int i = ini; i < fin; i++){
+        for(int j = i+1; i < fin; j++){
+            minAux = min(minAux, dist(P[i], P[j]));
+        }
+    }
+    return minAux;
+}
+
+float closest_Helper(vector<Point> &P, int ini, int fin){
+    // si en rango solo hay 3 o menos hacerlo por fuerza bruta
+    if( fin-ini < 3){
+        return bruteForce(P, ini, fin);
+    }
+    int mid = (ini+fin)/2;
+    Point midPoint = P[mid];
+    float dl = closest_Helper(P, ini, mid);
+    float dr = closest_Helper(P, mid+1, fin);
+    float dMenor = min(dl, dr);
+}
+
+float closest(vector<Point> &P){
+    //Ordenr con respeccto a X
+    sort(P.begin(), P.end(), compareX);
+    return closest_Helper(P, 0, P.size() - 1);
+}
+
 int main(){
     int n;
     float x, y;
