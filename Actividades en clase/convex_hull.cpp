@@ -2,10 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <stack>
-#include <cmath>
-#include <iomanip>
-
-using namespace std;
+ using namespace std;
 
  struct Point{
     int x, y;
@@ -19,7 +16,6 @@ using namespace std;
  };
 
 Point p0;
-
 
 int distSq(Point &p1, Point &p2){
     return  (p1.x - p2.x) * (p1.x - p2.x)  +
@@ -87,23 +83,11 @@ void convexHull(vector<Point> &points){
         }
         s.push(points[i]);
     }
-    double perimeter = 0;
-    vector<Point> vectP; 
     while(!s.empty()){
         Point p = s.top();
-        vectP.push_back(p);
-        //cout << "(" << p.x << ", " << p.y << ")" << endl;
+        cout << "(" << p.x << ", " << p.y << ")" << endl;
         s.pop();
     }
-    for(int i = 0; i < vectP.size(); i++){
-        if(i == vectP.size()-1){
-            perimeter += sqrt(distSq(vectP[i], vectP[0]));
-        }
-        else{
-            perimeter += sqrt(distSq(vectP[i], vectP[i+1]));
-        }
-    }
-    cout << "The perimeter of the wall is: " << fixed  << setprecision(2) << perimeter << endl;
 }
 
 int main(){
@@ -127,11 +111,4 @@ int main(){
 1 2
 3 1
 3 3
-
-5 
-2 10 
-12 10 
-12 30 
-2 30 
-7 20
  */
