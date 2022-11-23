@@ -1,3 +1,4 @@
+// Convez hull
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -71,6 +72,10 @@ void convexHull(vector<Point> &points){
         points[m] = points[i];
         m++;
     }
+    if(m < 3){
+        return;
+    }
+    
     stack<Point> s;
     s.push(points[0]);
     s.push(points[1]);

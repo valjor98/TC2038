@@ -75,6 +75,7 @@ void convexHull(vector<Point> &points){
         points[m] = points[i];
         m++;
     }
+
     stack<Point> s;
     s.push(points[0]);
     s.push(points[1]);
